@@ -12,19 +12,25 @@ namespace Tema1
     {
         private const string Path = @"C:\Users\Mateus\source\repos\Tema1\homicidios-geral.csv";
 
-        public ArrayList Reader()
+        public ArrayList AllContent()
         {
             String[] data = null;
-            String result = null;
             ArrayList list = new ArrayList();
 
             try
             {
                 StreamReader reader = new StreamReader(Path, Encoding.UTF8, true);
+                /* Tira o cabeçalho*/
+                reader.ReadLine();
 
-                while (reader.ReadLine() != null)
+                while (true)
                 {
-                    data = reader.ReadLine().Split(';');
+                    String line = reader.ReadLine();
+
+                    if (line == null)
+                        break;
+
+                    data = line.Split(';');
 
                     list.Add(data);
                 }
@@ -37,6 +43,44 @@ namespace Tema1
 
             return list;
             
+        }
+
+        public ArrayList HomicidePerYear (int year)
+        {
+            String[] data = null;
+            ArrayList list = new ArrayList();
+
+            try
+            {
+                StreamReader reader = new StreamReader(Path, Encoding.UTF8, true);
+                /* Tira o cabeçalho*/
+                reader.ReadLine();
+
+                while (true)
+                {
+                    String line = reader.ReadLine();
+
+                    if (line == null)
+                        break;
+
+                    data = line.Split(';');
+
+                    /* Traz os dados apenas do ano referenciado */
+                    if (data[2].Equals(Convert.ToString(year)))
+                    {
+                        list.Add(data);
+                    }
+
+                    
+                }
+
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine("Erro na procura do arquivo: " + e);
+            }
+
+            return list;
         }
     }
 
